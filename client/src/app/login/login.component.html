@@ -1,0 +1,36 @@
+<div class="content">
+  <h1>Login</h1>
+</div>
+<hr />
+<form [formGroup]="form" (submit)="onLoginSubmit()" novalidate>
+  <label class="label">Username</label>
+    <p class="control has-icon">
+      <input 
+        class="input" 
+        type="text" 
+        placeholder="Username"
+        formControlName="username">
+      <span class="icon is-small">
+        <i class="fa fa-user"></i>
+      </span>
+    </p>
+  <label class="label">Password</label>
+    <p class="control has-icon">
+      <input 
+        class="input" 
+        type="password" 
+        placeholder="Password"
+        formControlName="password">
+      <span class="icon is-small">
+        <i class="fa fa-key"></i>
+      </span>
+    </p>
+  <div class="control is-grouped">
+    <p class="control">
+      <button class="button is-primary" [disabled]="!form.valid">Submit</button>
+    </p>
+    <p class="control">
+      <button class="button is-link">Cancel</button>
+    </p>
+  </div>
+</form>

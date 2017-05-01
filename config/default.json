@@ -1,0 +1,35 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "authentication": {
+    "secret": "92952c81e69d91595c4f0e7b47222333bdbd1fc7cc892a1f07b6181e26536dc8ccf0563c59e02c72edb494c9674cd63637866dfafa9c0b3427f37996417b97677199ce1d092ddafb7c92a80daeae5a63e07013b273abd26e0060dff602133737fa60cadf7081d7114ef4da3259c5859aa6614e6b1c28f37f3098f8ec1d63591960d59754b525f16e33cbb822e181c13595757aebd9d4941caaf4c17204ee0dfa20d77f83b59c13cdfebffdb3a4761097d8fa9daa32cde37b3ee25c2127efb84aa2ddee8ee5171e541cc90df05c8a39584c3e08c9b05b4be0f742a893c2c597c92002bd8d71d30be61419a98fbf88beca9bc4c1d476d75eda15a8d69dccb224c8",
+    "strategies": [
+      "jwt",
+      "local"
+    ],
+    "path": "/authentication",
+    "service": "api/users",
+    "jwt": {
+      "header": {
+        "type": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "service": "api/users",
+      "usernameField": "email",
+      "passwordField": "password"
+    }
+  },
+  "mongodb": "mongodb://localhost:27017/flight_time_matcher"
+}

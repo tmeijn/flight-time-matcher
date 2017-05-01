@@ -1,0 +1,54 @@
+<div class="content">
+  <h1>Register</h1>
+</div>
+<hr />
+<form [formGroup]="form" (submit)="onRegisterSubmit()">
+  <label class="label">Email</label>
+  <p class="control has-icon has-icon-right">
+    <input 
+      class="input" 
+      [ngClass]="{
+        'is-danger': !form.controls['email'].valid && form.controls['email'].touched,
+        'is-success': form.controls['email'].valid
+      }"
+      type="email" 
+      placeholder="Enter email"
+      formControlName="email">
+    <span *ngIf="form.controls['email'].valid" class="icon is-small">
+      <i class="fa fa-check"></i>
+    </span>
+    <span *ngIf="formErrors.email" class="help is-danger">
+      {{ formErrors.email }}
+    </span>
+  </p>
+  <label class="label">Password</label>
+  <p class="control has-icon has-icon-right">
+    <input 
+      class="input" 
+      [ngClass]="{
+        'is-danger': !form.controls['password'].valid && form.controls['password'].touched,
+        'is-success': form.controls['password'].valid
+      }"
+      type="password" 
+      placeholder="Enter password"
+      formControlName="password">
+    <span *ngIf="form.controls['password'].valid" class="icon is-small">
+        <i class="fa fa-check"></i>
+      </span>
+      <span *ngIf="formErrors.password" class="help is-danger">
+        {{ formErrors.password }}
+      </span>
+  </p>
+  <div class="control is-grouped">
+    <p class="control">
+      <button class="button is-primary" [disabled]="!form.valid" [class.is-loading]="postingForm">Submit</button>
+    </p>
+    <p class="control">
+      <button class="button is-link" (click)="form.reset()">Reset</button>
+    </p>
+  </div>
+</form>
+<pre>
+  Form: {{ form.value | json}}
+  Valid: {{form.valid }}
+</pre>

@@ -1,0 +1,62 @@
+<nav class="nav has-shadow">
+  <div class="container">
+    <div class="nav-left">
+      <a class="nav-item">
+        <strong style="color: black ">FEATHERS REALTIME CHAT</strong>
+      </a>
+      <a 
+        class="nav-item is-tab is-hidden-mobile"
+        [routerLinkActive]="['is-active']"
+        [routerLinkActiveOptions]= "{exact: true}"
+        [routerLink]="['/chat']">
+        Chat
+      </a>
+      <a 
+        class="nav-item is-tab is-hidden-mobile is-disabled"
+        [routerLinkActive]="['is-active']"
+        [routerLinkActiveOptions]= "{exact: true}"
+        [routerLink]="['/profile']">
+        Profile
+      </a>
+    </div>
+    <span id="nav-toggle" class="nav-toggle" (click)="onMobileNavClick()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+    <div id="nav-menu" class="nav-right nav-menu" [class.is-active]="isActive">
+      <a 
+        class="nav-item is-tab is-hidden-tablet"
+        [routerLinkActive]="['is-active']"
+        (click)="onMobileNavClick()"
+        [routerLinkActiveOptions]= "{exact: true}"
+        [routerLink]="['/chat']">
+        Chat
+      </a>
+      <a 
+        class="nav-item is-tab is-hidden-tablet"
+        [routerLinkActive]="['is-active']"
+        (click)="onMobileNavClick()"
+        [routerLinkActiveOptions]= "{exact: true}"
+        [routerLink]="['/profile']">
+        Profile
+      </a>
+      <a 
+        class="nav-item is-tab" 
+        [routerLinkActive]="['is-active']"
+        (click)="onMobileNavClick()"
+        [routerLinkActiveOptions]= "{exact: true}"
+        [routerLink]="['/login']">
+        Login
+      </a>
+      <a 
+        class="nav-item is-tab"
+        [routerLinkActive]="['is-active']"
+        (click)="onMobileNavClick()"
+        [routerLinkActiveOptions]= "{exact: true}"
+        [routerLink]="['/signup']">
+        Signup
+      </a>
+    </div>
+  </div>
+</nav>
