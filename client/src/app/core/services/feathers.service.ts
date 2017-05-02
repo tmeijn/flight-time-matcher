@@ -16,7 +16,7 @@ const HOST = environment.apiBaseUrl ; // Api Base url.
 
 @Injectable()
 export class FeathersRestService {
-  private _app: any;
+  public _app: any;
 
   constructor() {
 
@@ -33,20 +33,17 @@ export class FeathersRestService {
 
     return this._app.authenticate({
       strategy: 'local',
-      email: email,
+      username: email,
       password : password
     }).then(response => {
-      console.log('Authenticated!', response);
       isAuthenticated = true;
       return this._app.passport.verifyJWT(response.accessToken);
     })
     .then(payload => {
-      console.log('JWT Payload', payload);
-      return this._app.service('users').get(payload.userId);
+      return this._app.service('api/users').get(payload.userId);
     })
     .then(user => {
       this._app.set('user', user);
-      console.log('User', this._app.get('user'));
       return isAuthenticated = true;
     })
     .catch(err => {

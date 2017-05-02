@@ -1,3 +1,8 @@
+//
+
+// Node sets the variable to the actual user. It conflicts with the usernameField setting in default.json, so it is deleted here.
+delete process.env.username;
+
 const path = require('path');
 const favicon = require('serve-favicon');
 const compress = require('compression');

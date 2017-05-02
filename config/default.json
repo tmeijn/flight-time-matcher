@@ -27,7 +27,7 @@
     "local": {
       "entity": "user",
       "service": "api/users",
-      "usernameField": "email",
+      "usernameField": "username",
       "passwordField": "password"
     }
   },

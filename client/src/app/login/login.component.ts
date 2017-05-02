@@ -1,3 +1,4 @@
+import { AuthService } from '../core/services/auth.service';
 import { FeathersRestService } from '../core/services/feathers.service';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(
     public _formBuilder: FormBuilder, 
     private _restService: FeathersRestService,
+    public _auth: AuthService,
     private _router: Router,
     private _flash: FlashMessagesService
   ) { 
@@ -40,13 +42,14 @@ export class LoginComponent implements OnInit {
     this._restService.authenticate(user.username, user.password).then(data => {
       if(data) {
         this._flash.show('You\'re now logged in', { cssClass: 'notification is-success', time: 3000 });
-        this._router.navigate(['chat']);
+        //this._router.navigate(['chat']);
+        console.log(this._auth.authToken);
 
       } else {
         console.log(data);
         this._flash.show('Login failed', { cssClass: 'notification is-danger', time: 3000 });
       }
-    }).catch(err => console.log(err));
+    }).catch(err => console.log('Error occured:', err));
   }
 }
 

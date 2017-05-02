@@ -6,6 +6,7 @@
       </a>
       <a 
         class="nav-item is-tab is-hidden-mobile"
+        *ngIf="_auth.isAuthenticated"
         [routerLinkActive]="['is-active']"
         [routerLinkActiveOptions]= "{exact: true}"
         [routerLink]="['/chat']">
@@ -51,6 +52,7 @@
       </a>
       <a 
         class="nav-item is-tab"
+        *ngIf="!_auth.isAuthenticated"
         [routerLinkActive]="['is-active']"
         (click)="onMobileNavClick()"
         [routerLinkActiveOptions]= "{exact: true}"

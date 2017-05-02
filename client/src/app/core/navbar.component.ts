@@ -1,4 +1,4 @@
-import { RestService } from './services/feathers.service';
+import { AuthService } from './services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
@@ -15,7 +15,8 @@ export class NavbarComponent implements OnInit {
   public isActive: boolean = false;
 
   constructor(
-    private _router: Router
+    private _router: Router,
+    public _auth: AuthService
   ) { }
 
   ngOnInit() {

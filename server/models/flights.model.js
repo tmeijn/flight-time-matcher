@@ -7,7 +7,7 @@ module.exports = function (app) {
   const flights = new mongooseClient.Schema({
     creator: { type: String, required: true },
     aircraft: { type: String, required: true },
-    slots: { type: Number, required: true },
+    slots: { type: Number, min: 2, max: 4, default: 2, required: true },
     pilots: [
       {
         slot: Number,

@@ -1,3 +1,4 @@
+import { SignupModule } from './signup/signup.module';
 import { LoginModule } from './login/login.module';
 
 import { CoreModule } from './core/core.module';
@@ -23,6 +24,7 @@ import { Router } from "@angular/router";
     HttpModule,
     CoreModule,
     LoginModule,
+    SignupModule,
     AppRoutingModule,
     FlashMessagesModule
   ],
