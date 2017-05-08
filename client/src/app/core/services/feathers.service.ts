@@ -14,36 +14,46 @@ import { environment } from '../../../environments/environment'; // load Angular
 
 const HOST = environment.apiBaseUrl ; // Api Base url.
 
+
 @Injectable()
+
 export class FeathersRestService {
-  public _app: any;
+  public feathersApp: any;
 
   constructor() {
 
-    this._app = feathers() // Initialize feathers
+    this.feathersApp = feathers() // Initialize feathers
       .configure(rest(HOST).superagent(superagent)) // Fire up rest
       .configure(hooks()) // Configure feathers-hooks
       .configure(authentication({
         storage: window.localStorage // Set storage of token
       }));
+
+    this.feathersApp.passport.getJWT().then(token => {
+      return this.feathersApp.passport.verifyJWT(token);
+    }).then(payload => {
+      return this.feathersApp.service('api/users').get(payload.userId);
+    }).then(user => {
+      this.feathersApp.set('user', user);
+    }).catch(err => console.log(err));
   }
 
-  public authenticate(email, password): Promise<boolean> {
+  public authenticate(username, password): Promise<boolean> {
     let isAuthenticated: boolean = false;
 
-    return this._app.authenticate({
+    return this.feathersApp.authenticate({
       strategy: 'local',
-      username: email,
+      username: username,
       password : password
     }).then(response => {
       isAuthenticated = true;
-      return this._app.passport.verifyJWT(response.accessToken);
+      return this.feathersApp.passport.verifyJWT(response.accessToken);
     })
     .then(payload => {
-      return this._app.service('api/users').get(payload.userId);
+      return this.feathersApp.service('api/users').get(payload.userId);
     })
     .then(user => {
-      this._app.set('user', user);
+      this.feathersApp.set('user', user);
       return isAuthenticated = true;
     })
     .catch(err => {
@@ -52,7 +62,7 @@ export class FeathersRestService {
   }
 
   public getService(service) {
-    return this._app.service(service);
+    return this.feathersApp.service(service);
   }
 }
 

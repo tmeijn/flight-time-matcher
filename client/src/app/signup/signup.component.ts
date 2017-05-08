@@ -24,11 +24,11 @@ export class SignupComponent implements OnInit {
     ) {
     // Build the form group
     this.form = this._formBuilder.group({
-      email: ['', [
+      username: ['', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(24),
-        Validators.pattern(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
+        Validators.pattern(/^[a-zA-Z0-9_]+$/)
       ]],
       password: ['', [
         Validators.required,
@@ -60,14 +60,15 @@ export class SignupComponent implements OnInit {
 
   //Declare form entries and corresponding error messages here
   formErrors = {
-    'email': '',
+    'username': '',
     'password': ''
   };
   validationMessages = {
-    'email': {
-      'required': 'Email is required.',
-      'pattern': 'Please enter a valid email',
-      'maxlength': 'Email is too long.'
+    'username': {
+      'required': 'Username is required.',
+      'minlength': 'Username must be at least 2 characters long.',
+      'maxlength': 'Username cannot be more than 24 characters long.',
+      'pattern': 'Username can only contain alphanumeric characters and underscores.'
     },
     'password': {
       'required': 'Password is required.',
@@ -91,7 +92,7 @@ export class SignupComponent implements OnInit {
 
     // Handle the submitted data
     const user = {
-      email: this.form.value['email'],
+      username: this.form.value['username'],
       password: this.form.value['password'],
     }
 
@@ -102,7 +103,7 @@ export class SignupComponent implements OnInit {
       this.postingForm = false;
     }, (err) => { 
       console.log('error:', err.message);
-      this.form.controls['email'].patchValue(err.message);
+      this.form.controls['username'].patchValue(err.message);
       this.postingForm = false;
     });
   }

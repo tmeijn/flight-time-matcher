@@ -3,22 +3,22 @@
 </div>
 <hr />
 <form [formGroup]="form" (submit)="onRegisterSubmit()">
-  <label class="label">Email</label>
+  <label class="label">Username</label>
   <p class="control has-icon has-icon-right">
     <input 
       class="input" 
       [ngClass]="{
-        'is-danger': !form.controls['email'].valid && form.controls['email'].touched,
-        'is-success': form.controls['email'].valid
+        'is-danger': !form.controls['username'].valid && form.controls['username'].touched,
+        'is-success': form.controls['username'].valid
       }"
-      type="email" 
-      placeholder="Enter email"
-      formControlName="email">
-    <span *ngIf="form.controls['email'].valid" class="icon is-small">
+      type="text" 
+      placeholder="Enter username"
+      formControlName="username">
+    <span *ngIf="form.controls['username'].valid" class="icon is-small">
       <i class="fa fa-check"></i>
     </span>
-    <span *ngIf="formErrors.email" class="help is-danger">
-      {{ formErrors.email }}
+    <span *ngIf="formErrors.username" class="help is-danger">
+      {{ formErrors.username }}
     </span>
   </p>
   <label class="label">Password</label>

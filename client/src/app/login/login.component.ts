@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
         this._flash.show('You\'re now logged in', { cssClass: 'notification is-success', time: 3000 });
         //this._router.navigate(['chat']);
         console.log(this._auth.authToken);
+        console.log(this._restService.feathersApp.get('user'));
 
       } else {
         console.log(data);

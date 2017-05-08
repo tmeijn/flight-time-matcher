@@ -27,16 +27,20 @@ export class ExtendedHttpService extends Http {
     return super.request(url, options).catch(this.catchErrors);
   }
 
+  /**
+   * Standard method that handles unauthorized requests.
+   * Tries to convert  the error to JSON. If failed, returns the raw error.
+   * @param err The error from the observable
+   */
   private catchErrors(err: any) {
-    // 
+    // Check if error is instance of response:
     if(err instanceof Response) {
       if (err.status === 401 || err.status === 403) {
-        //handle authorization errors
-        //TODO: Navigate to logout page.
+        // Handle authorization errors
         let navigationExtras: NavigationExtras = {
           queryParams: { 'reason': 'unauthorized', 'status': err.status }
         }
-        this.router.navigate(['signup'], navigationExtras);
+        this.router.navigate(['login'], navigationExtras);
       }
       // Format response to JSON, if possible
       return Observable.throw(err.json() || 'Backend server error');

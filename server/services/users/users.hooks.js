@@ -13,7 +13,8 @@ const restrict = [
 
 module.exports = {
   before: {
-    all: [],
+    all: [
+    ],
     find: [ authenticate('jwt') ],
     get: [ ...restrict ],
     create: [ hashPassword() ],

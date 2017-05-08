@@ -1,3 +1,5 @@
+import { ExtendedHttpService } from './core/services/extended-http.service';
+import { Http } from '@angular/http';
 import { SignupModule } from './signup/signup.module';
 import { LoginModule } from './login/login.module';
 
@@ -9,13 +11,14 @@ import { HttpModule } from '@angular/http';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 
 
-import { AppRoutingModule } from './app.routing';
+import { AppRoutingModule, routedComponents } from './app.routing';
 import { AppComponent } from './app.component';
 import { Router } from "@angular/router";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    routedComponents
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,9 @@ import { Router } from "@angular/router";
     AppRoutingModule,
     FlashMessagesModule
   ],
-  providers: [],
+  providers: [{
+    provide: Http, useClass: ExtendedHttpService
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { 
