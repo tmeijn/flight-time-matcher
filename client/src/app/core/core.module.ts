@@ -1,3 +1,4 @@
+import { UserService } from './services/user.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -22,7 +23,8 @@ import { FeathersRestService, FeathersSocketService } from './services/feathers.
     AuthService,
     ExtendedHttpService,
     FeathersRestService,
-    FeathersSocketService
+    FeathersSocketService,
+    UserService
   ]
 })
 export class CoreModule { }

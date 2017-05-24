@@ -7,7 +7,7 @@
     <ul>
       <li>{{ user.username }}</li>
       <li>User since {{ user.createdAt | date }}</li>
-      <li>Auth token {{ user.authToken }}</li>
+      <li>Auth token {{ user.authToken | async }}</li>
     </ul>
   </section>
   <pre>

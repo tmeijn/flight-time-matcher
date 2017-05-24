@@ -46,9 +46,10 @@ export class AuthService {
   /**
    * Wrapper for feathers getJWT() method. Retrieves token and sets authToken, if found.
    */
-  private getToken(): void {
-    this._feathersRestService.feathersApp.passport.getJWT().then(data => {
+  public getToken(): void {
+    return this._feathersRestService.feathersApp.passport.getJWT().then(data => {
       this.authToken = data;
+      return data;
     });
   }
 

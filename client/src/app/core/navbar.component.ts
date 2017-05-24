@@ -1,4 +1,4 @@
-import { FeathersRestService } from './services/feathers.service';
+import { FeathersRestService, FeathersSocketService } from './services/feathers.service';
 import { AuthService } from './services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
@@ -18,7 +18,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private _router: Router,
     public _auth: AuthService,
-    public feathers: FeathersRestService
+    public feathers: FeathersRestService,
+    public fSocket: FeathersSocketService
   ) { }
 
   ngOnInit() {

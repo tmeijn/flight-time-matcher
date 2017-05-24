@@ -1,3 +1,4 @@
+import { UserService } from './user.service';
 import { Injectable } from '@angular/core';
 
 // Import all necessary feathers modules.
@@ -16,26 +17,16 @@ const HOST = environment.apiBaseUrl ; // Api Base url.
 
 
 @Injectable()
-
 export class FeathersRestService {
   public feathersApp: any;
 
-  constructor() {
-
+  constructor(private userSerivce: UserService) {
     this.feathersApp = feathers() // Initialize feathers
       .configure(rest(HOST).superagent(superagent)) // Fire up rest
       .configure(hooks()) // Configure feathers-hooks
       .configure(authentication({
         storage: window.localStorage // Set storage of token
-      }));
-
-    this.feathersApp.passport.getJWT().then(token => {
-      return this.feathersApp.passport.verifyJWT(token);
-    }).then(payload => {
-      return this.feathersApp.service('api/users').get(payload.userId);
-    }).then(user => {
-      this.feathersApp.set('user', user);
-    }).catch(err => console.log(err));
+    }));
   }
 
   public authenticate(username, password): Promise<boolean> {
@@ -46,19 +37,24 @@ export class FeathersRestService {
       username: username,
       password : password
     }).then(response => {
-      isAuthenticated = true;
-      return this.feathersApp.passport.verifyJWT(response.accessToken);
-    })
-    .then(payload => {
-      return this.feathersApp.service('api/users').get(payload.userId);
-    })
-    .then(user => {
-      this.feathersApp.set('user', user);
+      this.fetchUser();
       return isAuthenticated = true;
-    })
-    .catch(err => {
-      return false;
+    }).catch(err => {
+      console.log(err);
+      return isAuthenticated = false;
     });
+  }
+
+  public fetchUser(): void {
+    return this.feathersApp.passport.getJWT().then(token => {
+      return this.feathersApp.passport.verifyJWT(token);
+    }).then(payload => {
+      return this.feathersApp.service('api/users').get(payload.userId);
+    }).then(user => {
+            console.log('this ever called?');
+
+      this.userSerivce.user = user;
+    }).catch(err => console.log(err));
   }
 
   public getService(service) {
@@ -76,15 +72,18 @@ export class FeathersSocketService {
     this._app = feathers()
       .configure(socketio(this.socket))
       .configure(hooks())
-      // .configure(authentication({
-      //   storage: window.localStorage
-      // }));
+      .configure(authentication({
+        storage: window.localStorage,
+        storageKey: 'feathers-socket'
+      }));
 
-    // this._app.authenticate({
-    //   strategy: 'local',
-    //   email: 'tyrone_meijn@hotmail',
-    //   password : 'test1'
-    // }).then(result => console.log(result)).catch(err => console.error('Error authenticating!', err));
+    this._app.passport.getJWT('feathers-jwt').then(resttoken => {
+      console.log('Logging into socket service...', resttoken);  
+      return this._app.authenticate({
+        strategy: 'jwt',
+        accessToken: resttoken
+      })
+    }).then(result => console.log(result)).catch(err => console.error('Error authenticating!', err));
   }
 
   getService(service) {
