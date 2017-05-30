@@ -3,16 +3,27 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'profile', component: ProfileComponent },
+  { path: 'users', 
+  loadChildren: './users/users.module#UsersModule'
+  },
   {
     path: '',
-    children: []
+    pathMatch: 'full',
+    redirectTo: '/users/my-account'
+  },
+  {
+    path: '404',
+    component: NotFoundComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/404'
   }
 ];
 
 @NgModule({
+  exports: [RouterModule],
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
 })
 export class AppRoutingModule { }
 
