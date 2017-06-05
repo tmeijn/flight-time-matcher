@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { UsersComponent } from './name.component';
+// Components
+import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
@@ -19,4 +22,4 @@ const routes: Routes = [
 })
 export class UsersRoutingModule { }
 
-export const routedComponents = [UsersComponent];
+export const routedComponents = [ProfileComponent, LoginComponent, SignupComponent];

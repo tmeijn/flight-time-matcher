@@ -1,39 +1,54 @@
-import { ExtendedHttpService } from './core/services/extended-http.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Http } from '@angular/http';
-import { SignupModule } from './signup/signup.module';
-import { LoginModule } from './login/login.module';
-
-import { CoreModule } from './core/core.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { FlashMessagesModule } from 'angular2-flash-messages';
-
-
-import { AppRoutingModule, routedComponents } from './app.routing';
-import { AppComponent } from './app.component';
 import { Router } from "@angular/router";
+
+// @NgRx
+import { RouterStoreModule } from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+  
+  // Reducers
+  import { reducer } from './app.reducers';
+
+// Feature Modules
+import { CoreModule } from './core/core.module';
+
+// Routing
+import { AppRoutingModule } from './app.routing';
+
+// Components
+import { AppComponent } from './app.component';
+
+// Services
+import { UserService } from './core/services/user.service';
+import { ExtendedHttpService } from './core/services/extended-http.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    routedComponents
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpModule,
+    BrowserAnimationsModule,
+    FlashMessagesModule,
     CoreModule,
-    LoginModule,
-    SignupModule,
+
+    //Feature Modules
     AppRoutingModule,
-    FlashMessagesModule
+
+    // NgRx Modules
+    RouterStoreModule.connectRouter(),
+    StoreModule.provideStore(reducer, {
+      router: window.location.pathname + window.location.search
+    })
   ],
-  providers: [{
-    provide: Http, useClass: ExtendedHttpService
-  }],
+  providers: [
+    { provide: Http, useClass: ExtendedHttpService },
+    UserService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

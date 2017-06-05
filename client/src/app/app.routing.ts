@@ -1,4 +1,3 @@
-import { ProfileComponent } from './profile/profile.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -9,12 +8,12 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/users/my-account'
+    redirectTo: '/users/profile'
   },
-  {
-    path: '404',
-    component: NotFoundComponent
-  },
+  // {
+  //   path: '404',
+  //   component: NotFoundComponent
+  // },
   {
     path: '**',
     redirectTo: '/404'
@@ -26,5 +25,3 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
 })
 export class AppRoutingModule { }
-
-export const routedComponents = [ProfileComponent];

@@ -64,4 +64,8 @@ export class UserService {
     return Observable.of(user);
   }
 
+  public signout() {
+    //TODO: Implement sign out
+  }
+
 }
