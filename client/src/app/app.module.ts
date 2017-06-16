@@ -1,3 +1,6 @@
+import { AuthenticatedGuard } from './shared/authentication.guard';
+import { EffectsModule } from '@ngrx/effects';
+import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Http } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,9 +12,13 @@ import { Router } from "@angular/router";
 // @NgRx
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
   
   // Reducers
   import { reducer } from './app.reducers';
+
+  // Effects
+  import { UserEffects } from "./users/users.effects";
 
 // Feature Modules
 import { CoreModule } from './core/core.module';
@@ -32,21 +39,24 @@ import { ExtendedHttpService } from './core/services/extended-http.service';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
+    HttpModule,
     FlashMessagesModule,
-    CoreModule,
 
     //Feature Modules
     AppRoutingModule,
 
     // NgRx Modules
-    RouterStoreModule.connectRouter(),
     StoreModule.provideStore(reducer, {
       router: window.location.pathname + window.location.search
-    })
+    }),
+    RouterStoreModule.connectRouter(),
+    StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    EffectsModule.run(UserEffects),
+    CoreModule,
   ],
   providers: [
     { provide: Http, useClass: ExtendedHttpService },
+    AuthenticatedGuard,
     UserService
   ],
   bootstrap: [AppComponent]

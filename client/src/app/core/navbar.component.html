@@ -6,7 +6,7 @@
       </a>
       <a 
         class="nav-item is-tab is-hidden-mobile"
-        *ngIf="_auth.isAuthenticated()"
+        *ngIf="isAuthenticated | async"
         [routerLinkActive]="['is-active']"
         [routerLinkActiveOptions]= "{exact: true}"
         [routerLink]="['/chat']">
@@ -14,10 +14,10 @@
       </a>
       <a 
         class="nav-item is-tab is-hidden-mobile is-disabled"
-        *ngIf="_auth.isAuthenticated()"
+        *ngIf="isAuthenticated | async"
         [routerLinkActive]="['is-active']"
         [routerLinkActiveOptions]= "{exact: true}"
-        [routerLink]="['/profile']">
+        [routerLink]="['users/profile']">
         Profile
       </a>
     </div>
@@ -37,36 +37,36 @@
       </a>
       <a 
         class="nav-item is-tab is-hidden-tablet"
-        *ngIf="_auth.isAuthenticated()"
+        *ngIf="isAuthenticated | async"
         [routerLinkActive]="['is-active']"
         (click)="onMobileNavClick()"
         [routerLinkActiveOptions]= "{exact: true}"
-        [routerLink]="['/profile']">
+        [routerLink]="['users/profile']">
         Profile
       </a>
       <a 
         class="nav-item is-tab" 
-        *ngIf="!_auth.isAuthenticated()"
+        *ngIf="!(isAuthenticated | async)"
         [routerLinkActive]="['is-active']"
         (click)="onMobileNavClick()"
         [routerLinkActiveOptions]= "{exact: true}"
-        [routerLink]="['/login']">
+        [routerLink]="['users/login']">
         Login
       </a>
       <a 
         class="nav-item is-tab"
-        *ngIf="!_auth.isAuthenticated()"
+        *ngIf="!(isAuthenticated | async)"
         [routerLinkActive]="['is-active']"
         (click)="onMobileNavClick()"
         [routerLinkActiveOptions]= "{exact: true}"
-        [routerLink]="['/signup']">
+        [routerLink]="['users/signup']">
         Signup
       </a>
       <a 
         class="nav-item is-tab"
-        *ngIf="_auth.isAuthenticated()"
+        *ngIf="isAuthenticated | async"
         (click)="logout()"
-        [routerLink]="['/login']">
+        [routerLink]="['users/login']">
         Logout
       </a>
     </div>

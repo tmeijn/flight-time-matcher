@@ -1,31 +1,40 @@
-import { UserService } from '../core/services/user.service';
-import { FeathersRestService } from '../core/services/feathers.service';
-import { AuthService } from '../core/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FlashMessagesService } from 'angular2-flash-messages';
+
+// NgRx
+import { Store } from '@ngrx/store';
+import { getAuthenticatedUser, State } from '../../app.reducers';
+import { Observable } from 'rxjs/Observable';
+
+// Models and Animations
+import { fadeInAnimation } from '../../shared/animations';
+import { User } from '../../core/models/user.model';
 
 
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
+    // make fade in animation available to this component
+    animations: [fadeInAnimation],
+
+    // attach the fade in animation to the host (root) element of this component
+    // display: block to make the fadeAnimation work.
+    host: { 
+      '[@fadeInAnimation]': '',
+      'style' : 'display: block;'
+   }
 })
 export class ProfileComponent implements OnInit {
-  user = {};
+
+  public user: Observable<any>;
 
   constructor(
-    public _authService: AuthService,
-    private _router: Router,
-    private _flashMessage: FlashMessagesService,
-    private _feathers: FeathersRestService,
-    private _userService: UserService
+    private store: Store<State>,
   ) { }
 
   ngOnInit() {
-    this.user = this._userService.user;
-    //this.user['authToken'] = this._authService.getToken();
-    // Object.defineProperty(this.user, 'authToken', {value: this._authService.authToken});
+    this.user = this.store.select(getAuthenticatedUser);
+    
   }
 
 }

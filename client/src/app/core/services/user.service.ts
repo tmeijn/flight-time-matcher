@@ -1,3 +1,4 @@
+import { FeathersSocketService } from './feathers.service';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { User } from "app/core/models/user.model";
@@ -5,8 +6,6 @@ import { User } from "app/core/models/user.model";
 export const MOCK_USER = new User();
 MOCK_USER._id = "1";
 MOCK_USER.email = "foo@test.com";
-MOCK_USER.firstName = "Foo";
-MOCK_USER.lastName = "Bar";
 MOCK_USER.password = "password";
 
 /**
@@ -15,6 +14,8 @@ MOCK_USER.password = "password";
 
 @Injectable()
 export class UserService {
+  
+  constructor(private feathers: FeathersSocketService) {}
 
   /**
    * True if authenticated
@@ -25,17 +26,13 @@ export class UserService {
   /**
    * Authenticate the user
    * 
-   * @param email the user's email address
+   * @param username the user's username
    * @param password the user's password
    * @returns {Observable<User>} the authenticated user observable
    */
-  public authenticate(email: string, password: string): Observable<User> {
-    //TODO: implement HTTP auth request.
+  public authenticate(username: string, password: string): Observable<User> {
 
-    if(email === MOCK_USER.email && password === MOCK_USER.password) {
-      this._authenticated = true;
-      return Observable.of(MOCK_USER);
-    }
+    return this.feathers.authenticate(username, password);
   }
 
   /**
@@ -51,21 +48,21 @@ export class UserService {
    * @returns {User}
    */
   public authenticatedUser(): Observable<User> {
-    return Observable.of(MOCK_USER);
+    return Observable.fromPromise(this.feathers.fetchUser());
   }
 
   /**
-   * Creates a new user and returns the creation Object
+   * Create a new user and return the creation Object
    * @param {User} user
    */
   public create(user: User): Observable<User> {
-    //TODO: Implement HTTP POST.
-    this._authenticated = true;
-    return Observable.of(user);
+    return Observable.fromPromise(this.feathers.registerUser(user));
   }
 
-  public signout() {
+  public signout(): Observable<boolean> {
     //TODO: Implement sign out
+    this._authenticated = false;
+    return Observable.of(true);
   }
 
 }

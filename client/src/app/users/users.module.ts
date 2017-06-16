@@ -1,3 +1,4 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -10,10 +11,10 @@ import { NgModule } from '@angular/core';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    UsersRoutingModule
+    UsersRoutingModule,
   ],
   exports: [],
   declarations: [routedComponents],
   providers: [],
 })
-export class NameModule { }
+export class UsersModule { }

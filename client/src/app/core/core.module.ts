@@ -1,17 +1,22 @@
-import { UserService } from './services/user.service';
+// Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { NavbarComponent } from './navbar.component';
-import { AuthService } from "app/core/services/auth.service";
-import { ExtendedHttpService } from './services/extended-http.service';
 import { RouterModule } from "@angular/router";
-import { FeathersRestService, FeathersSocketService } from './services/feathers.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Components
+import { NavbarComponent } from './navbar.component';
+
+// Services
+import { ExtendedHttpService } from './services/extended-http.service';
+import { FeathersSocketService } from './services/feathers.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    BrowserAnimationsModule,
   ],
   declarations: [
     NavbarComponent
@@ -20,9 +25,7 @@ import { FeathersRestService, FeathersSocketService } from './services/feathers.
     NavbarComponent
   ],
   providers: [
-    AuthService,
     ExtendedHttpService,
-    FeathersRestService,
     FeathersSocketService,
     UserService
   ]

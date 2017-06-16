@@ -1,9 +1,13 @@
+import { User } from '../../core/models/user.model';
+import { SignUpAction } from '../users.actions';
+import { Store } from '@ngrx/store';
+import { State } from '../../app.reducers';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 import { Router } from "@angular/router";
-import { AuthService } from "../core/services/auth.service";
 import { Observable } from "rxjs/Observable";
+import 'rxjs/add/operator/do';
 
 
 @Component({
@@ -19,7 +23,7 @@ export class SignupComponent implements OnInit {
 
   constructor(
     public _formBuilder: FormBuilder, 
-    private _authservice: AuthService,
+    private store: Store<State>,
     private _router: Router,
     ) {
     // Build the form group
@@ -38,6 +42,7 @@ export class SignupComponent implements OnInit {
     })
 
     this.form.valueChanges
+      .do(data => console.log('data changed:', data))
       .debounceTime(500)
       .subscribe(data => this.onValueChanged(data));
   }
@@ -91,20 +96,25 @@ export class SignupComponent implements OnInit {
     this.postingForm = true;
 
     // Handle the submitted data
-    const user = {
+    const user: User = {
       username: this.form.value['username'],
       password: this.form.value['password'],
     }
 
-    this._authservice.registerUser(user).subscribe(data => {
-      console.log('User registered', data);
+    const payload = {
+      user
+    }
 
-      setTimeout(() => this._router.navigate(['login']), 1000);
-      this.postingForm = false;
-    }, (err) => { 
-      console.log('error:', err.message);
-      this.form.controls['username'].patchValue(err.message);
-      this.postingForm = false;
-    });
+    this.store.dispatch(new SignUpAction(payload));
+    // subscribe(data => {
+    //   console.log('User registered', data);
+
+    //   setTimeout(() => this._router.navigate(['login']), 1000);
+    //   this.postingForm = false;
+    // }, (err) => { 
+    //   console.log('error:', err.message);
+    //   this.form.controls['username'].patchValue(err.message);
+    //   this.postingForm = false;
+    // });s
   }
 }
