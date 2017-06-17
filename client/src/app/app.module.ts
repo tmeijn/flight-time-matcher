@@ -1,3 +1,5 @@
+import { MessageComponent } from './chat/message.component';
+import { ChatComponent } from './chat/chat.component';
 import { AuthenticatedGuard } from './shared/authentication.guard';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpModule } from '@angular/http';
@@ -36,10 +38,13 @@ import { ExtendedHttpService } from './core/services/extended-http.service';
 @NgModule({
   declarations: [
     AppComponent,
+    ChatComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    FormsModule,
     FlashMessagesModule,
 
     //Feature Modules

@@ -1,0 +1,15 @@
+<h2>CHAT LOBBY</h2>
+<app-message *ngFor="let message of messages$ | async" [message]="message"></app-message>
+<div style="padding-top: 40px">
+    <form (ngSubmit)="sendMessage()">
+        <div class="field">
+            <label for="" class="label">Enter message:</label>
+            <p>
+                <input class="input" type="text" name="model" [(ngModel)]="newMessage.text">
+            </p>
+        </div>
+    </form>
+    <pre>
+      {{ newMessage | json }}
+    </pre>
+</div>

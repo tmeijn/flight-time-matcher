@@ -12,14 +12,6 @@
         [routerLink]="['/chat']">
         Chat
       </a>
-      <a 
-        class="nav-item is-tab is-hidden-mobile is-disabled"
-        *ngIf="isAuthenticated | async"
-        [routerLinkActive]="['is-active']"
-        [routerLinkActiveOptions]= "{exact: true}"
-        [routerLink]="['users/profile']">
-        Profile
-      </a>
     </div>
     <span id="nav-toggle" class="nav-toggle" (click)="onMobileNavClick()">
       <span></span>
@@ -61,6 +53,14 @@
         [routerLinkActiveOptions]= "{exact: true}"
         [routerLink]="['users/signup']">
         Signup
+      </a>
+      <a 
+        class="nav-item is-tab"
+        *ngIf="user | async; let user"
+        [routerLinkActive]="['is-active']"
+        (click)="onMobileNavClick()"
+        [routerLink]="['users/profile']">
+        {{ user?.username }}
       </a>
       <a 
         class="nav-item is-tab"

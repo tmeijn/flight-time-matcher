@@ -1,27 +1,33 @@
 import { ActivatedRoute } from '@angular/router';
-import { HostBinding } from '@angular/core';
-import { fadeInAnimation } from '../../shared/animations';
-import { go } from '@ngrx/router-store';
-import { Observable } from 'rxjs/Observable';
-import { AuthenticateAction } from '../users.actions';
-import { Store } from '@ngrx/store';
-import { getAuthenticationError, isAuthenticated, isAuthenticationLoading, State } from '../../app.reducers';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
+//NgRx
+import { Store } from '@ngrx/store';
+import { go } from '@ngrx/router-store';
+import { getAuthenticationError, isAuthenticated, isAuthenticationLoading, State } from '../../app.reducers';
+import { AuthenticateAction } from '../users.actions';
+
+//RxJS
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+
+import { fadeInAnimation } from '../../shared/animations';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   animations: [fadeInAnimation],
+  // attach the fade in animation to the host (root) element of this component
+    // display: block to make the fadeAnimation work.
+    host: { 
+      '[@fadeInAnimation]': '',
+      'style' : 'display: block;'
+   }
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  @HostBinding('@fadeInAnimation') 
-  public fadeInAnimation = true;
-  @HostBinding('style.display') display = 'block';
 
   /**
    * The error message if authentication fails.

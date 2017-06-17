@@ -1,6 +1,7 @@
+import { User } from './models/user.model';
 import { fadeInAnimation } from '../shared/animations';
 import { Observable } from 'rxjs/Observable';
-import { State, isAuthenticated } from '../app.reducers';
+import { getAuthenticatedUser, isAuthenticated, State } from '../app.reducers';
 import { Store } from '@ngrx/store';
 import { FeathersRestService, FeathersSocketService } from './services/feathers.service';
 import { Component, OnInit } from '@angular/core';
@@ -25,12 +26,15 @@ export class NavbarComponent implements OnInit {
   /** holds the state of authentication. */
   public isAuthenticated: Observable<boolean>;
 
+  public user: Observable<User>;
+
   constructor(
     private store: Store<State>
   ) { }
 
   ngOnInit() {
     this.isAuthenticated = this.store.select(isAuthenticated);
+    this.user = this.store.select(getAuthenticatedUser);
   }
 
   /**

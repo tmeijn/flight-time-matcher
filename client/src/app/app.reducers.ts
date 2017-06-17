@@ -12,17 +12,20 @@ import { environment } from "../environments/environment";
 
 // Import Reducers
 import * as users from "./users/users.reducers";
+import * as chat from './chat/chat.reducer';
 
 // Global state interface
 export interface State {
   router: RouterState;
   users: users.State;
+  chat: chat.State
 }
 
 // Reducers
 const reducers = {
   router: routerReducer,
-  users: users.reducer
+  users: users.reducer,
+  chat: chat.reducer
 };
 
 // Development reducer includes storeFreeze to prevent state from being mutated.
@@ -115,4 +118,12 @@ export const getSignOutError = createSelector(getUsersState, users.getSignOutErr
  * @return {Error}
  */
 export const getSignUpError = createSelector(getUsersState, users.getSignUpError);
+
+// ==============================================
+// Chat Selector functions
+// ==============================================
+
+export const getChatState = (state: State) => state.chat;
+
+export const getAllMessages = createSelector(getChatState, chat.getAllMessages);
 
