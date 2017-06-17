@@ -1,3 +1,5 @@
+import { ChatEffects } from './chat/chat.effects';
+import { ChatService } from './chat/chat.service';
 import { MessageComponent } from './chat/message.component';
 import { ChatComponent } from './chat/chat.component';
 import { AuthenticatedGuard } from './shared/authentication.guard';
@@ -57,12 +59,14 @@ import { ExtendedHttpService } from './core/services/extended-http.service';
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     EffectsModule.run(UserEffects),
+    EffectsModule.run(ChatEffects),
     CoreModule,
   ],
   providers: [
     { provide: Http, useClass: ExtendedHttpService },
     AuthenticatedGuard,
-    UserService
+    UserService,
+    ChatService
   ],
   bootstrap: [AppComponent]
 })

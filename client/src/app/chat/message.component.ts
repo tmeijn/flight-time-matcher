@@ -1,8 +1,14 @@
+import { fadeInAnimation } from '../shared/animations';
 import { Message } from '../core/models/message.model';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-message',
+  animations: [fadeInAnimation],
+  host: { 
+      '[@fadeInAnimation]': '',
+      'style' : 'display: block;'
+   },
   template: `
     <div class="box" style="margin-bottom: 20px;">
         <article class="media">
@@ -14,7 +20,7 @@ import { Component, OnInit, Input } from '@angular/core';
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>{{ message.sentBy.email }}</strong>
+                        <strong>{{ message.sentBy.username }}</strong> - <small>{{ message.createdAt | date:'shortTime' }}</small>
                         <br>
                         {{message.text}}
                     </p>

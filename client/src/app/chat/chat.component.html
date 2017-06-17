@@ -1,4 +1,6 @@
-<h2>CHAT LOBBY</h2>
+<div class="content">
+    <h1>CHAT LOBBY</h1>
+</div>
 <app-message *ngFor="let message of messages$ | async" [message]="message"></app-message>
 <div style="padding-top: 40px">
     <form (ngSubmit)="sendMessage()">

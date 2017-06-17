@@ -1,4 +1,5 @@
-import { AddMessageSuccessAction } from './chat.actions';
+import { FeathersSocketService } from '../core/services/feathers.service';
+import { AddMessageAction, AddMessageSuccessAction } from './chat.actions';
 import { Message } from '../core/models/message.model';
 import { Observable } from 'rxjs/Rx';
 import { getAllMessages, State } from '../app.reducers';
@@ -12,9 +13,8 @@ import { Component, OnInit } from '@angular/core';
 export class ChatComponent implements OnInit {
 
   public messages$: Observable<Message[]>;
-
-  public newMessage = new Message();
-  constructor(public store: Store<State>) { }
+  public newMessage: Message =  new Message();
+  constructor(public store: Store<State>, public feathers: FeathersSocketService) { }
 
   ngOnInit() { 
     this.messages$ = this.store.select(getAllMessages);
@@ -24,20 +24,20 @@ export class ChatComponent implements OnInit {
       text: 'test',
       sentBy: {
         avatar: 'test',
-        email: 'test@test.com'
-      }
+        email: 'test@test.com',
+        username: 'test_user'
+      },
+      createdAt: new Date()
     };
 
     this.store.dispatch(new AddMessageSuccessAction(payload));
     this.store.dispatch(new AddMessageSuccessAction(payload));
-    this.store.dispatch(new AddMessageSuccessAction(payload));
-    this.store.dispatch(new AddMessageSuccessAction(payload));
-    this.store.dispatch(new AddMessageSuccessAction(payload));
-    this.store.dispatch(new AddMessageSuccessAction(payload));
   }
 
-  
+
   sendMessage() {
-    this.store.dispatch(new AddMessageSuccessAction(this.newMessage));
+    this.store.dispatch(new AddMessageAction(this.newMessage));
+    this.newMessage = new Message();
+    //this.feathers.getService('api/messages').create(this.newMessage).then(result => console.log(result));
   }
 }

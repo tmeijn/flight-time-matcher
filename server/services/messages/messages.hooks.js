@@ -15,7 +15,18 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [
+      populate({
+        schema: {
+          include: [{
+            service: 'api/users',
+            nameAs: 'sentBy',
+            parentField: 'userId',
+            childField: '_id'
+          }]
+        }
+      })
+    ],
     find: [],
     get: [],
     create: [],
@@ -26,16 +37,7 @@ module.exports = {
 
   error: {
     all: [
-      populate({
-        schema: {
-          include: [{
-            service: 'users',
-            nameAs: 'sentBy',
-            parentField: 'userId',
-            childField: '_id'
-          }]
-        }
-      })
+      
     ],
     find: [],
     get: [],
