@@ -21,20 +21,12 @@
     <div id="nav-menu" class="nav-right nav-menu" [class.is-active]="isActive">
       <a 
         class="nav-item is-tab is-hidden-tablet"
+        *ngIf="(isAuthenticated | async)"
         [routerLinkActive]="['is-active']"
         (click)="onMobileNavClick()"
         [routerLinkActiveOptions]= "{exact: true}"
         [routerLink]="['/chat']">
         Chat
-      </a>
-      <a 
-        class="nav-item is-tab is-hidden-tablet"
-        *ngIf="isAuthenticated | async"
-        [routerLinkActive]="['is-active']"
-        (click)="onMobileNavClick()"
-        [routerLinkActiveOptions]= "{exact: true}"
-        [routerLink]="['users/profile']">
-        Profile
       </a>
       <a 
         class="nav-item is-tab" 

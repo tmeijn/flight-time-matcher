@@ -6,9 +6,18 @@ import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class AuthenticatedGuard implements CanActivate {
+
+  /** Holds the app state, needed for the timeout */
+  private firstAppload: boolean = true;
+
+  /** On first app load, time is needed to set the state to authenticated */
+  private timeoutMs: number = 500
+
   constructor(
     private store: Store<State>,
     private _flashMessage: FlashMessagesService) { }
@@ -18,6 +27,10 @@ export class AuthenticatedGuard implements CanActivate {
    * @method canActivate 
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+    if(!this.firstAppload) {
+      this.timeoutMs = 0;
+    }
+
     // Get the observable
     const observable = this.store.select(isAuthenticated);
 
@@ -26,13 +39,15 @@ export class AuthenticatedGuard implements CanActivate {
     redirectUrl = state.url;
 
     // Return user to login page if not authenticated.
-    observable.subscribe(authenticated => {
+    return observable.debounceTime(this.timeoutMs).switchMap(authenticated => {
+      this.firstAppload = false;
       if(!authenticated) {
         this.store.dispatch(go('users/login', redirectUrl ? {redirect: redirectUrl} : null));
         this._flashMessage.show('You must be authenticated to perfom this action', { cssClass: 'notification is-danger', timeout: 3000 });
+        return Observable.of(authenticated);
+      } else {
+        return Observable.of(authenticated);
       }
     })
-    
-    return observable;
   }
 }

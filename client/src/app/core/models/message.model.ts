@@ -6,8 +6,9 @@ interface sentBy {
 
 export class Message {
   _id?: string;
+  userId?: string;
   sentBy: sentBy;
   text: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }

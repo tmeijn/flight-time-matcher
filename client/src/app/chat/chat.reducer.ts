@@ -49,23 +49,24 @@ export function reducer(state: any = initialState, action: Actions): State {
     case ActionTypes.FETCH_MESSAGES:
       return {...state,
         loading: true,
-      }
+      };
 
     case ActionTypes.FETCH_MESSAGES_SUCCESS:
       return {...state,
-        messages: action.payload,
+        messages: action.payload.data,
         loading: false
       }
 
     case ActionTypes.FETCH_MESSAGES_FAILED:
       return {...state,
-        loading: false
-      }
+        loading: false,
+        error: action.payload.error.message
+      };
 
     default:
       return state;
-  }
-}
+  } // End switch statement
+} // End reducer
 
 /**
  * Returns all messages in the store.

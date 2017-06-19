@@ -25,7 +25,7 @@ export class ChatEffects {
   ) { }
 
   /**
-   * Authenticate the user.
+   * Post new message to server.
    */
   @Effect()
   public authenticate: Observable<Action> = this.actions$
@@ -45,4 +45,23 @@ export class ChatEffects {
           return Observable.of(new chatActions.AddMessageFailedAction({ error: newError }))
         });
     });
+
+    @Effect()
+    public fetchMessages: Observable<Action> = this.actions$
+      .ofType(actionTypes.FETCH_MESSAGES)
+      .map(toPayload)
+      .switchMap(payload => {
+        return this.chatService.fetchMessages(payload)
+        .map(messages => {console.log(messages); return new chatActions.FetchMessageSuccessAction(messages)})
+        .catch(error => {
+          //==========================
+          // TODO: HACK => seems to fix the issue with Zone.js not being able to transition the task to running.
+          // Should be revisited each Angular upgrade.
+          //==========================
+          let newError = {
+            message: error.message
+          }
+          return Observable.of(new chatActions.AddMessageFailedAction({ error: newError }))
+        });
+      })
 }

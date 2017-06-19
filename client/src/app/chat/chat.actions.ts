@@ -44,7 +44,31 @@ export class AddMessageFailedAction implements Action {
   constructor(public payload?: any) {}
 }
 
+/**
+ * Fetch Message Actions
+ */
+export class FetchMessageAction implements Action {
+  public type: string = ActionTypes.FETCH_MESSAGES;
+
+  constructor(public payload: any = 25) {}
+}
+
+export class FetchMessageSuccessAction implements Action {
+  public type: string = ActionTypes.FETCH_MESSAGES_SUCCESS;
+
+  constructor(public payload: Array<Message>) {}
+}
+
+export class FetchMessageFailedAction implements Action {
+  public type: string = ActionTypes.FETCH_MESSAGES_FAILED;
+
+  constructor(public payload?: any) {}
+}
+
 export type Actions = 
   AddMessageAction
   | AddMessageSuccessAction
   | AddMessageFailedAction
+  | FetchMessageAction
+  | FetchMessageSuccessAction
+  | FetchMessageFailedAction
