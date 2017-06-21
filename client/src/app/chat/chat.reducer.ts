@@ -72,6 +72,6 @@ export function reducer(state: any = initialState, action: Actions): State {
  * Returns all messages in the store.
  * @function getAllMessages
  * @param {State} state
- * @returns {[Messages]}
+ * @returns {[Message]}
  */
 export const getAllMessages = (state: State) => state.messages;

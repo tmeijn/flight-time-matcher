@@ -8,6 +8,7 @@
         class="nav-item is-tab is-hidden-mobile"
         *ngIf="isAuthenticated | async"
         [routerLinkActive]="['is-active']"
+        (click)="onMobileNavClick()"
         [routerLinkActiveOptions]= "{exact: true}"
         [routerLink]="['/chat']">
         Chat

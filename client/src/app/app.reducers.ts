@@ -123,7 +123,14 @@ export const getSignUpError = createSelector(getUsersState, users.getSignUpError
 // Chat Selector functions
 // ==============================================
 
+
 export const getChatState = (state: State) => state.chat;
 
+/**
+ * Returns all messages in the store.
+ * @function getAllMessages
+ * @param {State} state
+ * @returns {[Message]}
+ */
 export const getAllMessages = createSelector(getChatState, chat.getAllMessages);
 

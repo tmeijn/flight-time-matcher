@@ -9,6 +9,6 @@ export class Message {
   userId?: string;
   sentBy: sentBy;
   text: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

@@ -1,8 +1,10 @@
 <div class="content">
     <h1>CHAT LOBBY</h1>
 </div>
-<app-message *ngFor="let message of messages$ | async" [message]="message"></app-message>
-<div style="padding-top: 40px">
+<div style="overflow: auto; height: 350px;" class="chat">
+  <app-message *ngFor="let message of messages$ | async | orderBy: 'createdAt'" [message]="message"></app-message>
+</div>
+<div style="padding-top: 40px" >
     <form (ngSubmit)="sendMessage()">
         <div class="field">
             <label for="" class="label">Enter message:</label>
@@ -15,3 +17,4 @@
       {{ newMessage | json }}
     </pre>
 </div>
+

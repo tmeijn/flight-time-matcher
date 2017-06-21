@@ -2,9 +2,9 @@ import { Message } from '../core/models/message.model';
 import { Action } from '@ngrx/store';
 import { type } from '../core/util';
 /**
- * delete message
- * update message
- * add message
+ * TODO: delete message
+ * TODO: update message
+ * 
  */
 const ACTION_CATEGORY = '[chat]';
 
@@ -50,7 +50,11 @@ export class AddMessageFailedAction implements Action {
 export class FetchMessageAction implements Action {
   public type: string = ActionTypes.FETCH_MESSAGES;
 
-  constructor(public payload: any = 25) {}
+  /**
+   * @param {number} [payload=25] the number of messages to fetch.
+   * @param {number} [skip=0] how many to skip.
+   */
+  constructor(public payload: any = 25, public skip: number = 0) {}
 }
 
 export class FetchMessageSuccessAction implements Action {

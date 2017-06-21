@@ -16,32 +16,31 @@ export class AuthenticatedGuard implements CanActivate {
   private firstAppload: boolean = true;
 
   /** On first app load, time is needed to set the state to authenticated */
-  private timeoutMs: number = 500
+  private timeoutMs: number = 1000
 
   constructor(
     private store: Store<State>,
     private _flashMessage: FlashMessagesService) { }
 
   /**
-   * True when user is authenticated
+   * Returns True when user is authenticated
    * @method canActivate 
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     if(!this.firstAppload) {
       this.timeoutMs = 0;
-    }
+    };
 
     // Get the observable
     const observable = this.store.select(isAuthenticated);
 
-    let redirectUrl: string;
-    
-    redirectUrl = state.url;
+    let redirectUrl: string = state.url;
 
-    // Return user to login page if not authenticated.
+    // Determine if user is authenticated.
     return observable.debounceTime(this.timeoutMs).switchMap(authenticated => {
       this.firstAppload = false;
       if(!authenticated) {
+        // Return user to login page with the url to redirect to after login.
         this.store.dispatch(go('users/login', redirectUrl ? {redirect: redirectUrl} : null));
         this._flashMessage.show('You must be authenticated to perfom this action', { cssClass: 'notification is-danger', timeout: 3000 });
         return Observable.of(authenticated);

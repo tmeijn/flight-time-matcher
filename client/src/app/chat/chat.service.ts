@@ -1,41 +1,70 @@
-import { User } from '../core/models/user.model';
-import { OnInit } from '@angular/core/core';
-import { AddMessageSuccessAction, FetchMessageAction } from './chat.actions';
-import { getAllMessages, getAuthenticatedUser, State } from '../app.reducers';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Message } from '../core/models/message.model';
-import { FeathersSocketService } from '../core/services/feathers.service';
 import { Injectable } from '@angular/core';
+
+//NgRx
+import { Store } from '@ngrx/store';
+import { getAllMessages, State } from '../app.reducers';
+import { AddMessageSuccessAction, FetchMessageAction } from './chat.actions';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
+
+// Services
+import { FeathersSocketService } from '../core/services/feathers.service';
+
+//Models
+import { Message } from '../core/models/message.model';
 
 @Injectable()
 export class ChatService {
-  service;
+  /**
+   * Feathers service instance
+   * TODO: Find a typescript defintion of a feathers service.
+   */
+  service: any;
 
+  /** Holds the state of the chat components first load */
   firstLoad: boolean = true;
+
+  /** Holds the state of the chat component => if it is currently loaded */
+  active: boolean;
+
+  /** All the messages in the Store */
   messages$: Observable<Message[]>;
 
   constructor(private feathers: FeathersSocketService, public store: Store<State>) { 
     this.service = this.feathers.getService('api/messages');
     
     this.messages$ = this.store.select(getAllMessages);
-    
+
+    this.socketInit();
   }
 
-  public fetchMessages(amount: number): Observable<Message[]> {
-    let promise = this.service.find({query: { $limit: amount, $sort: { createdAt: -1 }  }});
+  /**
+   * Fetch messages from the server
+   * @param {Object} payload
+   * @param {number} payload.payload the amount of messages to retrieve
+   * @param {number} payload.skip the amount of messages to skip
+   * @returns {Observable}
+   */
+  public fetchMessages(payload: any): Observable<Message[]> {
+    let promise = this.service.find({query: { $limit: payload.payload, $skip: payload.skip, $sort: { createdAt: -1 }  }});
 
     return Observable.fromPromise(promise);
   }
 
+  /**
+   * Post message to the server
+   * @param {Message} message message to be posted.
+   */
   public postMessage(message: Message): Observable<Message> {
     let promise = this.service.create(message);
 
     return Observable.fromPromise(promise);
   }
 
-  private socketCreated(): void {
+  /**
+   * Creates eventListeners for the Feathers socket events.
+   */
+  private socketInit(): void {
     this.service.on('created', (message: Message) => {
         this.store.dispatch(new AddMessageSuccessAction(message));
     });

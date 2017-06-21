@@ -1,54 +1,45 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+// NgRx
+import { Store } from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
+import { getAllMessages, State } from '../app.reducers';
+import { ActionTypes, AddMessageAction, AddMessageSuccessAction, FetchMessageAction } from './chat.actions';
+import { Observable } from 'rxjs/Observable';
+
+// Services
 import { ChatService } from './chat.service';
 import { FeathersSocketService } from '../core/services/feathers.service';
-import { AddMessageAction, AddMessageSuccessAction, FetchMessageAction } from './chat.actions';
+
+// Models
 import { Message } from '../core/models/message.model';
-import { Observable } from 'rxjs/Rx';
-import { getAllMessages, State } from '../app.reducers';
-import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-chat',
   templateUrl: 'chat.component.html'
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
 
   public messages$: Observable<Message[]>;
   public newMessage: Message =  new Message();
-  constructor(public store: Store<State>, public feathers: FeathersSocketService, private chatService: ChatService) { }
+  constructor(public store: Store<State>, public feathers: FeathersSocketService, private chatService: ChatService, private actions$: Actions) { }
 
   ngOnInit() { 
     this.messages$ = this.chatService.messages$;
 
-
-    this.messages$ = this.messages$.map((data) => {
-      console.log(Array.isArray(data));
-      if (Array.isArray(data)) {
-        console.log(data);
-        data.sort(function(a, b) {
-          console.log(a, b);
-          return a.createdAt < b.createdAt ? 1 : -1;
-        });
-      }
-
-      return data;
-    });
-
+    /** dispatch FetchMessageAction only on first component load */
     if(this.chatService.firstLoad) {
-    this.store.dispatch(new FetchMessageAction(3));
-    this.chatService.firstLoad = false;
+      this.store.dispatch(new FetchMessageAction(3, 4));
+      this.chatService.firstLoad = false;
     };
 
-    const payload = {
-      _id: '1',
-      text: 'test',
-      sentBy: {
-        avatar: 'test',
-        email: 'test@test.com',
-        username: 'test_user'
-      },
-      createdAt: new Date()
-    };
+    this.chatService.active = true;
+  
+
+  }
+
+  ngOnDestroy() {
+    this.chatService.active = false;
   }
 
 

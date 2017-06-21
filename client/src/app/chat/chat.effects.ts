@@ -28,7 +28,7 @@ export class ChatEffects {
    * Post new message to server.
    */
   @Effect()
-  public authenticate: Observable<Action> = this.actions$
+  public addMessage: Observable<Action> = this.actions$
     .ofType(actionTypes.ADD_MESSAGE)
     .map(toPayload)
     .switchMap(payload => {
@@ -49,7 +49,7 @@ export class ChatEffects {
     @Effect()
     public fetchMessages: Observable<Action> = this.actions$
       .ofType(actionTypes.FETCH_MESSAGES)
-      .map(toPayload)
+      //.map(toPayload) <== need whole payload
       .switchMap(payload => {
         return this.chatService.fetchMessages(payload)
         .map(messages => {console.log(messages); return new chatActions.FetchMessageSuccessAction(messages)})

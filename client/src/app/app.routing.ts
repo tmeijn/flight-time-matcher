@@ -1,7 +1,11 @@
-import { AuthenticatedGuard } from './shared/authentication.guard';
-import { ChatComponent } from './chat/chat.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
+// Services
+import { AuthenticatedGuard } from './shared/authentication.guard';
+
+// Components
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   { path: 'users', 

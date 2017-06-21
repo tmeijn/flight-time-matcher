@@ -1,19 +1,17 @@
-import { ChatEffects } from './chat/chat.effects';
-import { ChatService } from './chat/chat.service';
-import { MessageComponent } from './chat/message.component';
-import { ChatComponent } from './chat/chat.component';
-import { AuthenticatedGuard } from './shared/authentication.guard';
-import { EffectsModule } from '@ngrx/effects';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Http } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlashMessagesModule } from 'angular2-flash-messages';
 import { Router } from "@angular/router";
 
+// 3rd party
+import { FlashMessagesModule } from 'angular2-flash-messages';
+import { NgPipesModule } from "ngx-pipes";
+
 // @NgRx
+import { EffectsModule } from '@ngrx/effects';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -22,6 +20,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
   import { reducer } from './app.reducers';
 
   // Effects
+  import { ChatEffects } from './chat/chat.effects';
   import { UserEffects } from "./users/users.effects";
 
 // Feature Modules
@@ -30,12 +29,18 @@ import { CoreModule } from './core/core.module';
 // Routing
 import { AppRoutingModule } from './app.routing';
 
+  // Guards
+  import { AuthenticatedGuard } from './shared/authentication.guard';
+
 // Components
 import { AppComponent } from './app.component';
+import { ChatComponent } from './chat/chat.component';
+import { MessageComponent } from './chat/message.component';
 
 // Services
-import { UserService } from './core/services/user.service';
+import { ChatService } from './chat/chat.service';
 import { ExtendedHttpService } from './core/services/extended-http.service';
+import { UserService } from './core/services/user.service';
 
 @NgModule({
   declarations: [
@@ -47,10 +52,14 @@ import { ExtendedHttpService } from './core/services/extended-http.service';
     BrowserModule,
     HttpModule,
     FormsModule,
-    FlashMessagesModule,
 
     //Feature Modules
+    CoreModule,
     AppRoutingModule,
+
+    // 3rd party Modules
+    FlashMessagesModule,
+    NgPipesModule,
 
     // NgRx Modules
     StoreModule.provideStore(reducer, {
@@ -60,13 +69,14 @@ import { ExtendedHttpService } from './core/services/extended-http.service';
     StoreDevtoolsModule.instrumentOnlyWithExtension(),
     EffectsModule.run(UserEffects),
     EffectsModule.run(ChatEffects),
-    CoreModule,
   ],
   providers: [
     { provide: Http, useClass: ExtendedHttpService },
-    AuthenticatedGuard,
     UserService,
-    ChatService
+    ChatService,
+
+    // Guards
+    AuthenticatedGuard,
   ],
   bootstrap: [AppComponent]
 })
