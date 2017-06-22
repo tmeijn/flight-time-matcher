@@ -1,7 +1,15 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const { populate } = require('feathers-hooks-common');
+const { restrictToOwner } = require('feathers-authentication-hooks');
 
 const processMessage = require('../../hooks/process-message');
+const restrict = [
+  authenticate('jwt'),
+  restrictToOwner({
+    idField: '_id',
+    ownerField: 'userId'
+  })
+];
 
 module.exports = {
   before: {
@@ -11,7 +19,7 @@ module.exports = {
     create: [processMessage()],
     update: [processMessage()],
     patch: [processMessage()],
-    remove: []
+    remove: [...restrict]
   },
 
   after: {
