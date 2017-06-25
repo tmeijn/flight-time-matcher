@@ -2,17 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 // NgRx
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
-import { getAllMessages, State } from '../app.reducers';
+import { getAllMessages, getAuthenticatedUser, State } from '../app.reducers';
 import { ActionTypes, AddMessageAction, AddMessageSuccessAction, FetchMessageAction } from './chat.actions';
 import { Observable } from 'rxjs/Observable';
 
 // Services
 import { ChatService } from './chat.service';
-import { FeathersSocketService } from '../core/services/feathers.service';
 
 // Models
 import { Message } from '../core/models/message.model';
+import { User } from '../core/models/user.model';
 
 @Component({
   selector: 'app-chat',
@@ -22,18 +21,28 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   public messages$: Observable<Message[]>;
   public newMessage: Message =  new Message();
-  constructor(public store: Store<State>, public feathers: FeathersSocketService, private chatService: ChatService, private actions$: Actions) { }
+  public currentUser: User;
+
+  constructor(
+    public store: Store<State>,
+    private chatService: ChatService) { }
 
   ngOnInit() { 
     this.messages$ = this.chatService.messages$;
 
     /** dispatch FetchMessageAction only on first component load */
     if(this.chatService.firstLoad) {
-      this.store.dispatch(new FetchMessageAction(3, 4));
+      this.store.dispatch(new FetchMessageAction());
       this.chatService.firstLoad = false;
     };
 
+    /** set component state to active */
     this.chatService.active = true;
+
+    /** retrieve current user from store */
+    this.store.select(getAuthenticatedUser).subscribe(user => {
+      this.currentUser = user;
+    });
   
 
   }

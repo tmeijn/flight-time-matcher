@@ -1,8 +1,8 @@
 <div class="content">
     <h1>CHAT LOBBY</h1>
 </div>
-<div style="overflow: auto; height: 350px;" class="chat">
-  <app-message *ngFor="let message of messages$ | async | orderBy: 'createdAt'" [message]="message"></app-message>
+<div *ngIf="currentUser" style="overflow: auto; height: 350px;" class="chat">
+  <app-message  *ngFor="let message of messages$ | async | orderBy: 'createdAt'" [message]="message" [currentUser]="currentUser"></app-message>
 </div>
 <div style="padding-top: 40px" >
     <form (ngSubmit)="sendMessage()">

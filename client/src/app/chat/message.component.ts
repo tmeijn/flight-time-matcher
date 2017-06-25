@@ -1,3 +1,4 @@
+import { User } from '../core/models/user.model';
 import { fadeInAnimation } from '../shared/animations';
 import { Message } from '../core/models/message.model';
 import { Component, OnInit, Input } from '@angular/core';
@@ -26,12 +27,14 @@ import { Component, OnInit, Input } from '@angular/core';
                     </p>
                 </div>
             </div>
+            <button *ngIf="message.userId === currentUser._id" class="delete"></button>
         </article>
     </div>
   `
 })
 
 export class MessageComponent implements OnInit {
+  @Input() currentUser: User;
   @Input() message: Message;
 
   constructor() { }
