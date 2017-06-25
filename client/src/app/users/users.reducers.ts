@@ -69,18 +69,25 @@ export function reducer(state: any = initialState, action: Actions): State {
         user: user
       };
 
+    case ActionTypes.SIGN_OUT:
+      return { ...state,
+        loading: true
+      }
+
     case ActionTypes.SIGN_OUT_ERROR:
       return { ...state, 
         authenticated: true,
         error: action.payload.error.message,
-        user: undefined
+        user: undefined,
+        loading: false
       };
 
     case ActionTypes.SIGN_OUT_SUCCESS:
       return { ...state, 
         authenticated: false,
         error: undefined,
-        user: undefined
+        user: undefined,
+        loading: false
       };
 
     case ActionTypes.SIGN_UP:

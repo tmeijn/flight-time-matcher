@@ -1,3 +1,4 @@
+import { SignOutAction } from '../users/users.actions';
 import { User } from './models/user.model';
 import { fadeInAnimation } from '../shared/animations';
 import { Observable } from 'rxjs/Observable';
@@ -42,6 +43,10 @@ export class NavbarComponent implements OnInit {
    */
   onMobileNavClick(): void {
     this.isActive ? this.isActive = false : this.isActive = true;
+  }
+
+  signout(): void {
+    this.store.dispatch(new SignOutAction);
   }
 
   logout() {

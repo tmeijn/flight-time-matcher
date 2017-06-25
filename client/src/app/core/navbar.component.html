@@ -58,7 +58,7 @@
       <a 
         class="nav-item is-tab"
         *ngIf="isAuthenticated | async"
-        (click)="logout()"
+        (click)="signout()"
         [routerLink]="['users/login']">
         Logout
       </a>

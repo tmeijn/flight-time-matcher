@@ -1,3 +1,4 @@
+import { observable } from 'rxjs/symbol/observable';
 import { FeathersSocketService } from './feathers.service';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
@@ -59,10 +60,13 @@ export class UserService {
     return Observable.fromPromise(this.feathers.registerUser(user));
   }
 
+  /**
+   * Log out the current user.
+   */
   public signout(): Observable<boolean> {
-    //TODO: Implement sign out
-    this._authenticated = false;
-    return Observable.of(true);
+    let promise = this.feathers.logOut();
+
+    return Observable.fromPromise(promise);
   }
 
 }

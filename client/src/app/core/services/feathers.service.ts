@@ -128,6 +128,10 @@ export class FeathersSocketService {
     });
   }
 
+  public logOut(): Promise<any> {
+    return this.feathersApp.logout();
+  }
+
   /**
    * Register user to the database.
    * @param {User} user the user information to be registered.
