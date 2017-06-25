@@ -1,13 +1,13 @@
 import { User } from '../core/models/user.model';
-import { fadeInAnimation } from '../shared/animations';
+import { fadeInAnimation, messageAnimation } from '../shared/animations';
 import { Message } from '../core/models/message.model';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-message',
-  animations: [fadeInAnimation],
+  animations: [messageAnimation],
   host: { 
-      '[@fadeInAnimation]': '',
+      '[@messageAnimation]': '',
       'style' : 'display: block;'
    },
   template: `
@@ -21,13 +21,13 @@ import { Component, OnInit, Input } from '@angular/core';
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>{{ message.sentBy.username }}</strong> - <small>{{ message.createdAt | date:'shortTime' }}</small>
+                        <strong>{{ message.sentBy.username }}</strong> - <small>{{ message.createdAt | date:'shortTime' }}</small><span *ngIf="deleting" style="color: red;"> deleting message...</span>
                         <br>
                         {{message.text}}
                     </p>
                 </div>
             </div>
-            <button *ngIf="message.userId === currentUser._id" class="delete"></button>
+            <button *ngIf="message.userId === currentUser._id" class="delete" (click)="delete()"></button>
         </article>
     </div>
   `
@@ -37,7 +37,17 @@ export class MessageComponent implements OnInit {
   @Input() currentUser: User;
   @Input() message: Message;
 
-  constructor() { }
+  @Output() deleteMessage = new EventEmitter();
+
+  deleting: boolean = false;
+
+  constructor() {
+   }
 
   ngOnInit() { }
+
+  public delete(): void {
+    this.deleteMessage.emit(this.message)
+    this.deleting = true;
+  }
 }

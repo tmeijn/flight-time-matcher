@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/switchMap";
+import "rxjs/add/operator/debounceTime";
 
 import * as chatActions from './chat.actions';
 let actionTypes = chatActions.ActionTypes;
@@ -43,6 +44,25 @@ export class ChatEffects {
             message: error.message
           }
           return Observable.of(new chatActions.AddMessageFailedAction({ error: newError }))
+        });
+    });
+
+    @Effect()
+    public deleteMessage: Observable<Action> = this.actions$
+    .ofType(actionTypes.DELETE_MESSAGE)
+    .map(toPayload)
+    .switchMap(payload => {
+      return this.chatService.deleteMessage(payload)
+      .map(message => new chatActions.DeleteMessageSuccessAction(message))
+      .catch(error => {
+          //==========================
+          // TODO: HACK => seems to fix the issue with Zone.js not being able to transition the task to running.
+          // Should be revisited each Angular upgrade.
+          //==========================
+          let newError = {
+            message: error.message
+          }
+          return Observable.of(new chatActions.DeleteMessageFailedAction({ error: newError }))
         });
     });
 

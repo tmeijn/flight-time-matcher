@@ -45,6 +45,28 @@ export class AddMessageFailedAction implements Action {
 }
 
 /**
+ * Delete Message Actions
+ */
+export class DeleteMessageAction implements Action {
+  public type: string = ActionTypes.DELETE_MESSAGE;
+
+  constructor(public payload: Message) {}
+}
+
+export class DeleteMessageSuccessAction implements Action {
+  public type: string = ActionTypes.DELETE_MESSAGE_SUCCESS;
+
+  constructor(public payload: Message) {}
+}
+
+export class DeleteMessageFailedAction implements Action {
+  public type: string = ActionTypes.DELETE_MESSAGE_FAILED;
+
+  constructor(public payload?: any) {}
+}
+
+
+/**
  * Fetch Message Actions
  */
 export class FetchMessageAction implements Action {

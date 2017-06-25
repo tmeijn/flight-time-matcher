@@ -39,6 +39,17 @@ export class ChatService {
   }
 
   /**
+   * Post message to the server
+   * @param {Message} message message to be posted.
+   */
+  public deleteMessage(message: Message): Observable<Message> {
+    let promise = this.service.remove(message);
+
+    return Observable.fromPromise(promise);
+  }
+
+
+  /**
    * Fetch messages from the server
    * @param {Object} payload
    * @param {number} payload.payload the amount of messages to retrieve

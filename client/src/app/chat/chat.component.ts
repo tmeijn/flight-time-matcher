@@ -3,7 +3,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 // NgRx
 import { Store } from '@ngrx/store';
 import { getAllMessages, getAuthenticatedUser, State } from '../app.reducers';
-import { ActionTypes, AddMessageAction, AddMessageSuccessAction, FetchMessageAction } from './chat.actions';
+import {
+  ActionTypes,
+  AddMessageAction,
+  AddMessageSuccessAction,
+  DeleteMessageAction,
+  FetchMessageAction
+} from './chat.actions';
 import { Observable } from 'rxjs/Observable';
 
 // Services
@@ -56,5 +62,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.store.dispatch(new AddMessageAction(this.newMessage));
     this.newMessage = new Message();
     //this.feathers.getService('api/messages').create(this.newMessage).then(result => console.log(result));
+  }
+
+  logMessage(event) {
+    this.store.dispatch(new DeleteMessageAction(event));
   }
 }

@@ -28,7 +28,7 @@ export function reducer(state: any = initialState, action: Actions): State {
       return {...state, loading: true};
     
     case ActionTypes.ADD_MESSAGE_SUCCESS:
-      const new_messages = state.messages.concat(action.payload);
+      var new_messages = state.messages.concat(action.payload);
 
       return {...state, 
         messages: new_messages,
@@ -37,6 +37,27 @@ export function reducer(state: any = initialState, action: Actions): State {
       };
     
     case ActionTypes.ADD_MESSAGE_FAILED:
+      return {...state,
+        loading: false,
+        error: action.payload.error.message
+      };
+
+    /**
+     *  Delete Message
+     */
+
+    case ActionTypes.DELETE_MESSAGE:
+      return {...state,
+        loading: true};
+
+    case ActionTypes.DELETE_MESSAGE_SUCCESS:
+      var new_messages = state.messages.filter(message => message._id !== action.payload._id);
+
+      return {...state,
+        messages: new_messages
+      };
+
+    case ActionTypes.DELETE_MESSAGE_FAILED:
       return {...state,
         loading: false,
         error: action.payload.error.message
