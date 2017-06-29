@@ -21,9 +21,6 @@ export class ChatService {
    */
   service: any;
 
-  /** Holds the state of the chat components first load */
-  firstLoad: boolean = true;
-
   /** Holds the state of the chat component => if it is currently loaded */
   active: boolean;
 
@@ -64,6 +61,7 @@ export class ChatService {
 
   /**
    * Patch message on the server
+   * @param {Message} message message to be patched.
    */
   public patchMessage(message: Message): Observable<Message> {
     let promise = this.service.patch(message._id, {text: message.text});

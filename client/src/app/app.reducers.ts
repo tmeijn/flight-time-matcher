@@ -28,6 +28,8 @@ const reducers = {
   chat: chat.reducer
 };
 
+
+
 // Development reducer includes storeFreeze to prevent state from being mutated.
 const developmentReducer: ActionReducer<State> = 
   compose(storeFreeze, combineReducers)(reducers);
@@ -37,6 +39,11 @@ const productionReducer: ActionReducer<State> =
   combineReducers(reducers);
 
 export function reducer(state: any, action: any) {
+  // Reset state when user logs out
+  if(action.type === '[users] Sign Out Success') {
+    state = undefined;
+  }
+
   if(environment.production) {
     return productionReducer(state, action);
   } else {

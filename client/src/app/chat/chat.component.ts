@@ -30,17 +30,19 @@ export class ChatComponent implements OnInit, OnDestroy {
   public newMessage: Message =  new Message();
   public currentUser: User;
 
+  private _loaded: boolean = false;
+
   constructor(
     public store: Store<State>,
     private chatService: ChatService) { }
 
   ngOnInit() { 
     this.messages$ = this.chatService.messages$;
+    this.store.select(state => state.chat.loaded).subscribe(loaded => this._loaded = loaded);
 
     /** dispatch FetchMessageAction only on first component load */
-    if(this.chatService.firstLoad) {
+    if(!this._loaded) {
       this.store.dispatch(new FetchMessageAction());
-      this.chatService.firstLoad = false;
     };
 
     /** set component state to active */

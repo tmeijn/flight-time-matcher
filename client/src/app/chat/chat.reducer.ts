@@ -32,7 +32,6 @@ export function reducer(state: any = initialState, action: Actions): State {
 
       return {...state, 
         messages: new_messages,
-        loaded: true,
         loading: false
       };
     
@@ -75,7 +74,8 @@ export function reducer(state: any = initialState, action: Actions): State {
     case ActionTypes.FETCH_MESSAGES_SUCCESS:
       return {...state,
         messages: action.payload.data,
-        loading: false
+        loading: false,
+        loaded: true
       }
 
     case ActionTypes.FETCH_MESSAGES_FAILED:
