@@ -21,6 +21,24 @@
       {{ formErrors.username }}
     </span>
   </p>
+  <label class="label">Email</label>
+  <p class="control has-icon has-icon-right">
+    <input 
+      class="input" 
+      [ngClass]="{
+        'is-danger': !form.controls['email'].valid && form.controls['email'].touched,
+        'is-success': form.controls['email'].valid
+      }"
+      type="email" 
+      placeholder="Enter email"
+      formControlName="email">
+    <span *ngIf="form.controls['email'].valid" class="icon is-small">
+      <i class="fa fa-check"></i>
+    </span>
+    <span *ngIf="formErrors.email" class="help is-danger">
+      {{ formErrors.email }}
+    </span>
+  </p>
   <label class="label">Password</label>
   <p class="control has-icon has-icon-right">
     <input 
@@ -39,7 +57,7 @@
         {{ formErrors.password }}
       </span>
   </p>
-  <div class="control is-grouped">
+  <div class="field is-grouped">
     <p class="control">
       <button class="button is-primary" [disabled]="!form.valid" [class.is-loading]="postingForm">Submit</button>
     </p>
@@ -48,7 +66,3 @@
     </p>
   </div>
 </form>
-<pre>
-  Form: {{ form.value | json}}
-  Valid: {{form.valid }}
-</pre>
