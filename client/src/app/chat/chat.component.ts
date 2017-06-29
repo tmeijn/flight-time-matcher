@@ -8,7 +8,8 @@ import {
   AddMessageAction,
   AddMessageSuccessAction,
   DeleteMessageAction,
-  FetchMessageAction
+  FetchMessageAction,
+  UpdateMessageAction
 } from './chat.actions';
 import { Observable } from 'rxjs/Observable';
 
@@ -49,22 +50,28 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.store.select(getAuthenticatedUser).subscribe(user => {
       this.currentUser = user;
     });
-  
-
   }
 
   ngOnDestroy() {
     this.chatService.active = false;
   }
 
+  public deleteMessage(event) {
+    this.store.dispatch(new DeleteMessageAction(event));
+  }
 
-  sendMessage() {
+  public patchMessage(event) {
+    this.store.dispatch(new UpdateMessageAction(event));
+  }
+
+  public sendMessage() {
     this.store.dispatch(new AddMessageAction(this.newMessage));
     this.newMessage = new Message();
     //this.feathers.getService('api/messages').create(this.newMessage).then(result => console.log(result));
   }
 
-  logMessage(event) {
-    this.store.dispatch(new DeleteMessageAction(event));
+  protected trackByFn(index, item) {
+    return item._id;
   }
+
 }

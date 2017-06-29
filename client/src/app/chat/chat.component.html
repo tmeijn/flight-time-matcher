@@ -3,10 +3,11 @@
 </div>
 <div *ngIf="currentUser" style="overflow: auto; height: 350px;" class="chat">
   <app-message
-    *ngFor="let message of messages$ | async | orderBy: 'createdAt'" 
+    *ngFor="let message of messages$ | async | orderBy: 'createdAt';trackBy: trackByFn" 
     [message]="message" 
     [currentUser]="currentUser"
-    (deleteMessage)="logMessage($event)">
+    (deleteMessage)="deleteMessage($event)"
+    (patchMessage)="patchMessage($event)">
   </app-message>
 </div>
 <div style="padding-top: 40px" >
@@ -14,12 +15,9 @@
         <div class="field">
             <label for="" class="label">Enter message:</label>
             <p>
-                <input class="input" type="text" name="model" [(ngModel)]="newMessage.text">
+                <input class="input" type="text" name="model" [(ngModel)]="newMessage.text" autocomplete="off">
             </p>
         </div>
     </form>
-    <pre>
-      {{ newMessage | json }}
-    </pre>
 </div>
 

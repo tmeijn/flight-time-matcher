@@ -7,7 +7,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/switchMap";
-import "rxjs/add/operator/debounceTime";
 
 import * as chatActions from './chat.actions';
 let actionTypes = chatActions.ActionTypes;
@@ -49,12 +48,12 @@ export class ChatEffects {
 
     @Effect()
     public deleteMessage: Observable<Action> = this.actions$
-    .ofType(actionTypes.DELETE_MESSAGE)
-    .map(toPayload)
-    .switchMap(payload => {
-      return this.chatService.deleteMessage(payload)
-      .map(message => new chatActions.DeleteMessageSuccessAction(message))
-      .catch(error => {
+      .ofType(actionTypes.DELETE_MESSAGE)
+      .map(toPayload)
+      .switchMap(payload => {
+        return this.chatService.deleteMessage(payload)
+        .map(message => new chatActions.DeleteMessageSuccessAction(message))
+        .catch(error => {
           //==========================
           // TODO: HACK => seems to fix the issue with Zone.js not being able to transition the task to running.
           // Should be revisited each Angular upgrade.
@@ -64,7 +63,7 @@ export class ChatEffects {
           }
           return Observable.of(new chatActions.DeleteMessageFailedAction({ error: newError }))
         });
-    });
+      });
 
     @Effect()
     public fetchMessages: Observable<Action> = this.actions$
@@ -72,7 +71,7 @@ export class ChatEffects {
       //.map(toPayload) <== need whole payload
       .switchMap(payload => {
         return this.chatService.fetchMessages(payload)
-        .map(messages => {console.log(messages); return new chatActions.FetchMessageSuccessAction(messages)})
+        .map(messages => new chatActions.FetchMessageSuccessAction(messages))
         .catch(error => {
           //==========================
           // TODO: HACK => seems to fix the issue with Zone.js not being able to transition the task to running.
@@ -81,7 +80,26 @@ export class ChatEffects {
           let newError = {
             message: error.message
           }
-          return Observable.of(new chatActions.AddMessageFailedAction({ error: newError }))
+          return Observable.of(new chatActions.FetchMessageFailedAction({ error: newError }))
+        });
+      })
+    
+    @Effect()
+    public updateMessage: Observable<Action> = this.actions$
+      .ofType(actionTypes.UPDATE_MESSAGE)
+      .map(toPayload)
+      .switchMap(payload => {
+        return this.chatService.patchMessage(payload)
+        .map(message => new chatActions.UpdateMessageSuccessAction(message))
+        .catch(error => {
+          //==========================
+          // TODO: HACK => seems to fix the issue with Zone.js not being able to transition the task to running.
+          // Should be revisited each Angular upgrade.
+          //==========================
+          let newError = {
+            message: error.message
+          }
+          return Observable.of(new chatActions.UpdateMessageFailedAction({ error: newError }))
         });
       })
 }

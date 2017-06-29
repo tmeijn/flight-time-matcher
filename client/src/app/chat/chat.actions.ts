@@ -91,6 +91,29 @@ export class FetchMessageFailedAction implements Action {
   constructor(public payload?: any) {}
 }
 
+/**
+ * Update Message Actions
+ */
+export class UpdateMessageAction implements Action {
+  public type: string = ActionTypes.UPDATE_MESSAGE;
+
+  constructor(public payload: Message) {}
+}
+
+export class UpdateMessageSuccessAction implements Action {
+  public type: string = ActionTypes.UPDATE_MESSAGE_SUCCESS;
+
+  constructor(public payload: Message) {}
+}
+
+export class UpdateMessageFailedAction implements Action {
+  public type: string = ActionTypes.UPDATE_MESSAGE_FAILED;
+  
+  constructor(public payload?: any) {}
+}
+
+  
+
 export type Actions = 
   AddMessageAction
   | AddMessageSuccessAction

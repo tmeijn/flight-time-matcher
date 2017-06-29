@@ -84,6 +84,34 @@ export function reducer(state: any = initialState, action: Actions): State {
         error: action.payload.error.message
       };
 
+    /**
+     *  UPDATE Message
+    */
+
+    case ActionTypes.UPDATE_MESSAGE:
+      return {...state,
+        loading: true,
+      };
+
+    case ActionTypes.UPDATE_MESSAGE_SUCCESS:
+      var new_messages = state.messages.map(message => {
+        if(message._id === action.payload._id) {
+          message = action.payload;
+        }
+        return message;
+      })
+
+      return {...state,
+        messages: new_messages,
+        loading: false
+      }
+
+    case ActionTypes.UPDATE_MESSAGE_FAILED:
+      return {...state,
+        loading: false,
+        error: action.payload.error.message
+      };
+
     default:
       return state;
   } // End switch statement

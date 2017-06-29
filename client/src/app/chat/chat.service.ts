@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 //NgRx
 import { Store } from '@ngrx/store';
 import { getAllMessages, State } from '../app.reducers';
-import { AddMessageSuccessAction, FetchMessageAction } from './chat.actions';
+import { AddMessageSuccessAction, FetchMessageAction, UpdateMessageSuccessAction, DeleteMessageSuccessAction } from './chat.actions';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 
@@ -63,6 +63,15 @@ export class ChatService {
   }
 
   /**
+   * Patch message on the server
+   */
+  public patchMessage(message: Message): Observable<Message> {
+    let promise = this.service.patch(message._id, {text: message.text});
+
+    return Observable.fromPromise(promise);
+  }
+
+  /**
    * Post message to the server
    * @param {Message} message message to be posted.
    */
@@ -78,6 +87,12 @@ export class ChatService {
   private socketInit(): void {
     this.service.on('created', (message: Message) => {
         this.store.dispatch(new AddMessageSuccessAction(message));
+    });
+    this.service.on('patched', (message: Message) => {
+        this.store.dispatch(new UpdateMessageSuccessAction(message));
+    });
+    this.service.on('removed', (message: Message) => {
+        this.store.dispatch(new DeleteMessageSuccessAction(message));
     });
   }
 }
