@@ -55,8 +55,7 @@ export function reducer(state: any = initialState, action: Actions): State {
       };
 
     case ActionTypes.AUTHENTICATION_SUCCESS:
-    case ActionTypes.SIGN_UP_SUCCESS:
-      const user: User = action.payload.user;
+      var user: User = action.payload.user;
 
       if(user === null) {
         return state;
@@ -64,6 +63,19 @@ export function reducer(state: any = initialState, action: Actions): State {
       
       return { ...state, 
         authenticated: true,
+        error: undefined,
+        loading: false,
+        user: user
+      };
+    case ActionTypes.SIGN_UP_SUCCESS:
+      var user: User = action.payload.user;
+
+      if(user === null) {
+        return state;
+      }
+      
+      return { ...state, 
+        authenticated: false,
         error: undefined,
         loading: false,
         user: user

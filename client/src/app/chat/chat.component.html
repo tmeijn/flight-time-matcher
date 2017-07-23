@@ -1,7 +1,7 @@
 <div class="content">
     <h1>CHAT LOBBY</h1>
 </div>
-<div *ngIf="currentUser" style="overflow: auto; height: 350px;" class="chat">
+<div *ngIf="currentUser" class="chat">
   <app-message
     *ngFor="let message of messages$ | async | orderBy: 'createdAt';trackBy: trackByFn" 
     [message]="message" 

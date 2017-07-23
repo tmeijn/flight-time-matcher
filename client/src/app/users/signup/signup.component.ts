@@ -1,13 +1,14 @@
 import { User } from '../../core/models/user.model';
-import { SignUpAction } from '../users.actions';
-import { Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { getAuthenticatedUser, State } from '../../app.reducers';
+import { AuthenticateAction, SignUpAction } from '../users.actions';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { go } from '@ngrx/router-store';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
-import { Router } from "@angular/router";
-import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/do';
+import { Store } from "@ngrx/store";
 
 
 @Component({
@@ -17,7 +18,8 @@ import 'rxjs/add/operator/do';
 })
 export class SignupComponent implements OnInit {
   form: FormGroup;
-  postingForm: boolean = false;
+
+  loading: Observable<boolean>;
   
   
 
@@ -94,17 +96,17 @@ export class SignupComponent implements OnInit {
   };
 
   ngOnInit() {
+    this.loading = this.store.select(state => state.users.loading);
+
+    
   }
 
   onRegisterSubmit() {
-
-    // TODO: Logic when form is not valid
+    
     if(!this.form.valid) {
       console.log('Not valid');
       return;
     }
-
-    this.postingForm = true;
 
     // Handle the submitted data
     const user: User = {
@@ -118,15 +120,17 @@ export class SignupComponent implements OnInit {
     }
 
     this.store.dispatch(new SignUpAction(payload));
-    // subscribe(data => {
-    //   console.log('User registered', data);
 
-    //   setTimeout(() => this._router.navigate(['login']), 1000);
-    //   this.postingForm = false;
-    // }, (err) => { 
-    //   console.log('error:', err.message);
-    //   this.form.controls['username'].patchValue(err.message);
-    //   this.postingForm = false;
-    // });s
+    this.store.select(getAuthenticatedUser)
+      .filter(user => user !== null)
+      .subscribe(action => {
+        this.store.dispatch(go('users/login'));
+      })
+
+    /**
+     * We need to subscribe here to the authenticated state and login
+     * via a new dispatched action. This way the user will be auto logged in
+     * after successfull register.
+     */
   }
 }

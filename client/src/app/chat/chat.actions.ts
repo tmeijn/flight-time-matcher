@@ -1,11 +1,7 @@
 import { Message } from '../core/models/message.model';
 import { Action } from '@ngrx/store';
 import { type } from '../core/util';
-/**
- * TODO: delete message
- * TODO: update message
- * 
- */
+
 const ACTION_CATEGORY = '[chat]';
 
 export const ActionTypes = {

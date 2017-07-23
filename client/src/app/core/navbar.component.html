@@ -13,6 +13,15 @@
         [routerLink]="['/chat']">
         Chat
       </a>
+      <a 
+        class="nav-item is-tab is-hidden-mobile"
+        *ngIf="isAuthenticated | async"
+        [routerLinkActive]="['is-active']"
+        (click)="onMobileNavClick()"
+        [routerLinkActiveOptions]= "{exact: true}"
+        [routerLink]="['/flights']">
+        Flights
+      </a>
     </div>
     <span id="nav-toggle" class="nav-toggle" (click)="onMobileNavClick()">
       <span></span>
@@ -49,7 +58,7 @@
       </a>
       <a 
         class="nav-item is-tab"
-        *ngIf="user | async; let user"
+        *ngIf="isAuthenticated && user | async; let user"
         [routerLinkActive]="['is-active']"
         (click)="onMobileNavClick()"
         [routerLink]="['users/profile']">

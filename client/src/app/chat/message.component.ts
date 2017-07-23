@@ -23,7 +23,7 @@ import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angu
                 <div class="content">
                     <p>
                         <strong>{{ message.sentBy.username }}</strong> - <small>{{ message.createdAt | date:'shortTime' }}</small>
-                        <span *ngIf="message.createdAt !== message.updatedAt" style="color: gray;">(edited at {{ message.updatedAt | date:'shortTime' }})</span>
+                        <span *ngIf="message.createdAt !== message.updatedAt" style="color: gray;"><small>(edited at {{ message.updatedAt | date:'shortTime' }})</small></span>
                         <span *ngIf="deleting" style="color: red;"> deleting message...</span>
                         <button *ngIf="message.userId === currentUser._id && !editing" class="button is-link is-small" (click)="editing = !editing">Edit</button>
                         <br />
